@@ -1,0 +1,12 @@
+.field {
+  margin-bottom: 40px;
+  width: 200px;
+  height: 200px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(3, 1fr);
+  gap: 4px;
+}
+
+.fieldButton {
+}
