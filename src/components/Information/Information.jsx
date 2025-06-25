@@ -1,7 +1,22 @@
-import PropTypes from 'prop-types';
 import { InformationLayout } from '../InformationLayout/InformationLayout';
+import { store } from '../../store';
+import { useState, useEffect } from 'react';
 
-export const Information = ({ currentPlayer, isGameEnded, isDraw }) => {
+export const Information = () => {
+  const [_, setForceUpdate] = useState(0);
+
+  useEffect(() => {
+    const unsubscribe = store.subscribe(() => {
+      setForceUpdate((prev) => prev + 1);
+    });
+
+    return () => {
+      unsubscribe();
+    };
+  }, []);
+
+  const { currentPlayer, isGameEnded, isDraw } = store.getState();
+
   const message = () => {
     if (isDraw) {
       return `Ничья`;
@@ -13,10 +28,4 @@ export const Information = ({ currentPlayer, isGameEnded, isDraw }) => {
   };
 
   return <InformationLayout>{message()}</InformationLayout>;
-};
-
-Information.propTypes = {
-  currentPlayer: PropTypes.oneOf(['X', '0']).isRequired,
-  isGameEnded: PropTypes.bool.isRequired,
-  isDraw: PropTypes.bool.isRequired,
 };
