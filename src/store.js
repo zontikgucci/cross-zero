@@ -1,4 +1,4 @@
 import { createStore } from 'redux';
-import { appReducer } from './reducer';
+import { gameReducer } from './reducers';
 
-export const store = createStore(appReducer);
+export const store = createStore(gameReducer);

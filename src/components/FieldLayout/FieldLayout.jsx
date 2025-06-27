@@ -1,12 +1,13 @@
+import { useSelector } from 'react-redux';
 import styles from './FieldLayout.module.css';
-import { store } from '../../store';
+import { selectField } from '../../selectors';
 
 export const FieldLayout = ({ clickPlayer }) => {
-  const { initialFiled } = store.getState();
+  const field = useSelector(selectField);
 
   return (
     <div className={styles.field}>
-      {initialFiled.map((item, i) => (
+      {field.map((item, i) => (
         <button className={styles.fieldButton} key={i} onClick={() => clickPlayer(i)}>
           {item}
         </button>

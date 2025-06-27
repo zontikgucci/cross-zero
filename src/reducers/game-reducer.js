@@ -1,18 +1,18 @@
-const initialState = {
-  initialFiled: Array(9).fill(''),
-  currentPlayer: 'X',
+const initialGameState = {
+  field: Array(9).fill(''),
+  player: 'X',
   isGameEnded: false,
   isDraw: false,
 };
 
-export const appReducer = (state = initialState, { type, payload }) => {
+export const gameReducer = (state = initialGameState, { type, payload }) => {
   switch (type) {
     case 'RESET_GAME':
-      return initialState;
+      return initialGameState;
     case 'SET_FIELD':
       return {
         ...state,
-        initialFiled: payload,
+        field: payload,
       };
     case 'SET_GAME_ENDED':
       return {
@@ -27,7 +27,7 @@ export const appReducer = (state = initialState, { type, payload }) => {
     case 'SET_CURRENT_PLAYER':
       return {
         ...state,
-        currentPlayer: payload,
+        player: payload,
       };
     default:
       return state;

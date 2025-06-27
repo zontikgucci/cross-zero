@@ -1,6 +1,7 @@
 import { FieldLayout } from '../FieldLayout/FieldLayout';
-import { store } from '../../store';
-import { useState, useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { selectField, selectPlayer, selectIsGameEnded } from '../../selectors';
+import { updateField, gameEnded, draw, player } from '../../actions';
 
 const WIN_PATTERNS = [
   [0, 1, 2],
@@ -14,19 +15,11 @@ const WIN_PATTERNS = [
 ];
 
 export const Field = () => {
-  const [_, setForceUpdate] = useState(0);
+  const dispatch = useDispatch();
 
-  useEffect(() => {
-    const unsubscribe = store.subscribe(() => {
-      setForceUpdate((prev) => prev + 1);
-    });
-
-    return () => {
-      unsubscribe();
-    };
-  }, []);
-
-  const { currentPlayer, initialFiled: field, isGameEnded } = store.getState();
+  const field = useSelector(selectField);
+  const currentPlayer = useSelector(selectPlayer);
+  const isGameEnded = useSelector(selectIsGameEnded);
 
   const checkWinner = (currentField) => {
     const winner = WIN_PATTERNS.find(
@@ -44,24 +37,21 @@ export const Field = () => {
     const winner = checkWinner(newField);
 
     if (winner) {
-      store.dispatch({ type: 'SET_FIELD', payload: newField });
-      store.dispatch({ type: 'SET_GAME_ENDED', payload: true });
+      dispatch(updateField(newField));
+      dispatch(gameEnded(true));
       return;
     }
 
     const isDraw = newField.every((cell) => cell !== '');
     if (isDraw) {
-      store.dispatch({ type: 'SET_FIELD', payload: newField });
-      store.dispatch({ type: 'SET_IS_DRAW', payload: true });
-      store.dispatch({ type: 'SET_GAME_ENDED', payload: true });
+      dispatch(updateField(newField));
+      dispatch(draw(true));
+      dispatch(gameEnded(true));
       return;
     }
 
-    store.dispatch({ type: 'SET_FIELD', payload: newField });
-    store.dispatch({ type: 'SET_CURRENT_PLAYER', payload: currentPlayer === 'X' ? '0' : 'X' });
-
-    console.log(newField);
-    console.log(currentPlayer);
+    dispatch(updateField(newField));
+    dispatch(player(currentPlayer === 'X' ? '0' : 'X'));
   };
 
   return <FieldLayout clickPlayer={onClick} />;
