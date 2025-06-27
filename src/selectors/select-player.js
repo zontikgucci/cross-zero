@@ -1,1 +1,1 @@
-export const selectPlayer = (state) => state.player;
+export const selectPlayer = (state) => state.gameState.player;

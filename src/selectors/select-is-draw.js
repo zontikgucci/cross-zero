@@ -1,1 +1,1 @@
-export const selecIsDraw = (state) => state.isDraw;
+export const selecIsDraw = (state) => state.gameState.isDraw;
